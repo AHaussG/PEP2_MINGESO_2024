@@ -1,12 +1,12 @@
 package com.app2.usuario_service.service;
 
 import com.app2.usuario_service.entity.User;
+import com.app2.usuario_service.exception.DuplicateRutException;
 import com.app2.usuario_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,9 +23,9 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        Optional<User> existingUser = userRepository.findByNombreAndRut(user.getNombre(), user.getRut());
-        if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("El usuario con ese nombre y RUT ya existe.");
+        // Validar unicidad del RUT
+        if (userRepository.existsByRut(user.getRut())) {
+            throw new DuplicateRutException("Ya existe un usuario registrado con el RUT: " + user.getRut());
         }
         return userRepository.save(user);
     }
@@ -37,4 +37,8 @@ public class UserService {
     public boolean validarUsuario(String nombre, String rut) {
         return userRepository.findByNombreAndRut(nombre, rut).isPresent();
     }
+    public boolean existsByRut(String rut) {
+        return userRepository.existsByRut(rut);
+    }
+
 }

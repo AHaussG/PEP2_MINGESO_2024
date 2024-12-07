@@ -27,12 +27,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
+            // Validar si el RUT ya existe
+            if (userService.existsByRut(user.getRut())) {
+                return ResponseEntity.badRequest().body("Ya existe un usuario registrado con este RUT.");
+            }
+
             User newUser = userService.createUser(user);
             return ResponseEntity.ok(newUser);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

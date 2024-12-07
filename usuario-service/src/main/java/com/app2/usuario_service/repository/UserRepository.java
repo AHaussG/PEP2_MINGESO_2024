@@ -8,5 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+    // Método existente para validar usuario por nombre y RUT
     Optional<User> findByNombreAndRut(String nombre, String rut);
+
+    // Nuevo método para verificar existencia por RUT
+    boolean existsByRut(String rut);
 }
