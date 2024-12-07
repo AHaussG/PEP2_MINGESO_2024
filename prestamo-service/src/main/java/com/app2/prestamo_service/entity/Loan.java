@@ -19,13 +19,14 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int usuarioId; // Referencia a User
-    private String tipoPrestamo; // e.g., "Primera Vivienda", "Segunda Vivienda"
+    private int usuarioId; // Referencia al usuario
+    private String tipoPrestamo; // Primera Vivienda, Segunda Vivienda, etc.
     private double monto;
-    private int plazo;
+    private int plazo; // En años
     private double tasaInteres;
     private double valorPropiedad;
-    private String estado; // e.g., "En Revisión", "Aprobado", etc.
+    private String estado; // Estado del préstamo
+    private boolean comprobanteIngreso; // Documento entregado físicamente
+    private boolean certificadoAvaluo;  // Documento entregado físicamente
     private LocalDateTime fechaSolicitud;
 }
-

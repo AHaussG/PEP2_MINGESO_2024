@@ -8,9 +8,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "users") // Nombre de la tabla en la base de datos
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,9 +21,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String nombre;
+
+    @Column(nullable = false)
+    private String nombre; // Nombre del usuario
+
+    @Column(nullable = false, unique = true)
+    private String rut; // RUT único
+
     private String email;
     private String telefono;
     private double ingresoMensual;
-    private LocalDateTime fechaRegistro;
 }

@@ -1,0 +1,13 @@
+// Para crear //
+
+1) users
+2) simulation_logs
+3) loans
+4) evaluations
+
+// Para poblar //
+
+1) users
+2) simulation_logs
+3) loans
+4) evaluations

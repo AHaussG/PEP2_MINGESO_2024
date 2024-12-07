@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Integer> {
-    // Métodos personalizados para búsqueda:
-    // List<Loan> findByUsuarioId(int usuarioId);
+    // Puedes agregar métodos personalizados si los necesitas, aunque JpaRepository cubre lo básico
 }
