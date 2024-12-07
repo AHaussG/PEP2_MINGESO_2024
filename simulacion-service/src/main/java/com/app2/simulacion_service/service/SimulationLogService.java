@@ -5,6 +5,7 @@ import com.app2.simulacion_service.repository.SimulationLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -13,56 +14,46 @@ public class SimulationLogService {
     @Autowired
     private SimulationLogRepository simulationLogRepository;
 
-    public double calcularCuotaMensual(double monto, int plazo, double tasaInteres) {
+    // Crear una simulación
+    public SimulationLog realizarSimulacion(String tipoPrestamo, double monto, int plazo, Double tasaInteres) {
+        // Validar y asignar tasas de interés según tipo de préstamo
+        if (tasaInteres == null) {
+            switch (tipoPrestamo) {
+                case "Primera Vivienda":
+                    tasaInteres = 3.5 + Math.random() * (5.0 - 3.5);
+                    break;
+                case "Segunda Vivienda":
+                    tasaInteres = 4.0 + Math.random() * (6.0 - 4.0);
+                    break;
+                case "Propiedades Comerciales":
+                    tasaInteres = 5.0 + Math.random() * (7.0 - 5.0);
+                    break;
+                case "Remodelación":
+                    tasaInteres = 4.5 + Math.random() * (6.0 - 4.5);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Tipo de préstamo no válido.");
+            }
+        }
+
+        // Calcular la cuota mensual
         double tasaMensual = tasaInteres / 100 / 12;
-        int numeroCuotas = plazo * 12;
-        return (monto * tasaMensual * Math.pow(1 + tasaMensual, numeroCuotas)) /
-                (Math.pow(1 + tasaMensual, numeroCuotas) - 1);
-    }
+        int plazoMeses = plazo * 12;
+        double cuotaMensual = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazoMeses));
 
-    public SimulationLog realizarSimulacion(String tipoPrestamo, double monto, int plazo, double tasaInteres) {
-        validarTasaInteres(tipoPrestamo, tasaInteres);
-
-        double cuotaMensual = calcularCuotaMensual(monto, plazo, tasaInteres);
-
+        // Crear y guardar el registro de simulación
         SimulationLog simulationLog = new SimulationLog();
         simulationLog.setTipoPrestamo(tipoPrestamo);
         simulationLog.setMonto(monto);
         simulationLog.setPlazo(plazo);
         simulationLog.setTasaInteres(tasaInteres);
         simulationLog.setCuotaMensual(cuotaMensual);
-        simulationLog.setFecha(java.time.LocalDateTime.now());
+        simulationLog.setFecha(LocalDateTime.now());
 
         return simulationLogRepository.save(simulationLog);
     }
 
-    private void validarTasaInteres(String tipoPrestamo, double tasaInteres) {
-        switch (tipoPrestamo) {
-            case "Primera Vivienda":
-                if (tasaInteres < 3.5 || tasaInteres > 5.0) {
-                    throw new IllegalArgumentException("La tasa de interés debe estar entre 3.5% y 5.0% para Primera Vivienda");
-                }
-                break;
-            case "Segunda Vivienda":
-                if (tasaInteres < 4.0 || tasaInteres > 6.0) {
-                    throw new IllegalArgumentException("La tasa de interés debe estar entre 4.0% y 6.0% para Segunda Vivienda");
-                }
-                break;
-            case "Propiedades Comerciales":
-                if (tasaInteres < 5.0 || tasaInteres > 7.0) {
-                    throw new IllegalArgumentException("La tasa de interés debe estar entre 5.0% y 7.0% para Propiedades Comerciales");
-                }
-                break;
-            case "Remodelación":
-                if (tasaInteres < 4.5 || tasaInteres > 6.0) {
-                    throw new IllegalArgumentException("La tasa de interés debe estar entre 4.5% y 6.0% para Remodelación");
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de préstamo no válido");
-        }
-    }
-
+    // Listar todas las simulaciones
     public List<SimulationLog> obtenerTodasLasSimulaciones() {
         return simulationLogRepository.findAll();
     }
