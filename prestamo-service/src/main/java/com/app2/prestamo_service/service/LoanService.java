@@ -17,7 +17,7 @@ public class LoanService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String USER_SERVICE_VALIDATE_URL = "http://localhost:8082/api/users/validate";
+    private static final String USER_SERVICE_VALIDATE_URL = "http://localhost:8082/api/users/validate-by-rut";
 
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();

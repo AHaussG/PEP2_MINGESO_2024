@@ -5,7 +5,7 @@ USE simulacion_db;
 -- Tabla: simulation_logs
 CREATE TABLE simulation_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_prestamo ENUM('Primera Vivienda', 'Segunda Vivienda', 'Propiedades Comerciales', 'Remodelación') NOT NULL COMMENT 'Tipo de préstamo simulado',
+    tipo_prestamo VARCHAR(50) NOT NULL COMMENT 'Tipo de préstamo simulado',
     monto DECIMAL(15,2) NOT NULL COMMENT 'Monto del préstamo simulado',
     plazo INT NOT NULL COMMENT 'Plazo del préstamo en años',
     tasa_interes DECIMAL(5,2) NOT NULL COMMENT 'Tasa de interés anual',

@@ -5,7 +5,7 @@ USE prestamo_db;
 -- Tabla: loans
 CREATE TABLE loans (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL COMMENT 'Referencia al usuario que solicitó el préstamo',
+    rut VARCHAR(12) NOT NULL COMMENT 'Referencia al usuario mediante el RUT',
     tipo_prestamo ENUM('Primera Vivienda', 'Segunda Vivienda', 'Propiedades Comerciales', 'Remodelación') NOT NULL COMMENT 'Tipo de préstamo solicitado',
     monto DECIMAL(15,2) NOT NULL COMMENT 'Monto solicitado',
     plazo INT NOT NULL COMMENT 'Plazo del préstamo en años',
