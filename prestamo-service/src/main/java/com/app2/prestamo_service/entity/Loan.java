@@ -19,7 +19,7 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int usuarioId; // Referencia al usuario
+    private String rut; // Referencia al usuario mediante el RUT
     private String tipoPrestamo; // Primera Vivienda, Segunda Vivienda, etc.
     private double monto;
     private int plazo; // En años

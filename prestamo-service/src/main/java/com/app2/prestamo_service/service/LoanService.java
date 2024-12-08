@@ -4,6 +4,7 @@ import com.app2.prestamo_service.entity.Loan;
 import com.app2.prestamo_service.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -12,6 +13,11 @@ public class LoanService {
 
     @Autowired
     private LoanRepository loanRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static final String USER_SERVICE_VALIDATE_URL = "http://localhost:8082/api/users/validate";
 
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
@@ -22,6 +28,11 @@ public class LoanService {
     }
 
     public Loan createLoan(Loan loan) {
+        // Validar el RUT con usuario-service
+        boolean isUserValid = validateUserByRut(loan.getRut());
+        if (!isUserValid) {
+            throw new IllegalArgumentException("El RUT proporcionado no pertenece a ningún usuario registrado.");
+        }
         return loanRepository.save(loan);
     }
 
@@ -61,5 +72,11 @@ public class LoanService {
 
     public void deleteLoan(int id) {
         loanRepository.deleteById(id);
+    }
+
+    private boolean validateUserByRut(String rut) {
+        String url = USER_SERVICE_VALIDATE_URL + "?rut=" + rut;
+        Boolean isValid = restTemplate.getForObject(url, Boolean.class);
+        return isValid != null && isValid;
     }
 }

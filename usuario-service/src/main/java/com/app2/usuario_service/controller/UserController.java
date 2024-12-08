@@ -41,6 +41,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/validate-by-rut")
+    public ResponseEntity<Boolean> validateUserByRut(@RequestParam String rut) {
+        boolean exists = userService.existsByRut(rut);
+        return ResponseEntity.ok(exists);
+    }
+
+
     @GetMapping("/validate")
     public ResponseEntity<Boolean> validarUsuario(
             @RequestParam String nombre,

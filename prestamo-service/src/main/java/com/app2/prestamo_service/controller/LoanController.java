@@ -27,9 +27,15 @@ public class LoanController {
     }
 
     @PostMapping
-    public ResponseEntity<Loan> createLoan(@RequestBody Loan loan) {
-        return ResponseEntity.ok(loanService.createLoan(loan));
+    public ResponseEntity<?> createLoan(@RequestBody Loan loan) {
+        try {
+            Loan newLoan = loanService.createLoan(loan);
+            return ResponseEntity.ok(newLoan);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Loan> updateLoan(@PathVariable int id, @RequestBody Loan loanDetails) {
