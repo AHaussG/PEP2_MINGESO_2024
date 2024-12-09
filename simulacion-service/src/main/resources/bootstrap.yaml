@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: simulacion-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    url: jdbc:mysql://localhost:3306/simulacion_db
+    username: root
+    password: 7590db12
+  jpa:
+    hibernate:
+      ddl-auto: update
