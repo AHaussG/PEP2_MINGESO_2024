@@ -39,7 +39,7 @@ public class SimulationLogService {
         // Calcular la cuota mensual
         double tasaMensual = tasaInteres / 100 / 12;
         int plazoMeses = plazo * 12;
-        double cuotaMensual = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazoMeses));
+        double cuotaMensual = (monto * (tasaMensual * Math.pow(1 + tasaMensual, plazoMeses))) / (Math.pow(1 + tasaMensual, plazoMeses) - 1);
 
         // Crear y guardar el registro de simulación
         SimulationLog simulationLog = new SimulationLog();
